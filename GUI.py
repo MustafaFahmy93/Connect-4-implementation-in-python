@@ -1,28 +1,39 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
-
 
 import cv2 as cv
 import numpy as np
 import math
 
 
-# In[12]:
 
 
 ix,iy = -1,-1
+board = np.zeros((6,7),np.uint8)
 def getXY(event,x,y,flags,param):
     global ix,iy
+    global board
     if event == cv.EVENT_LBUTTONDOWN:
         ix,iy = x,y
         print(ix,iy)
-        print(calculateCol(x))
+        col = calculateCol(x)
+        fill(col)
+        print(board)
+        
+def fill(col):
+    global board
+    for i in range(6):
+        if(board[5-i,col-1]==0):
+            board[5-i,col-1]=1
+            break
 
 def calculateCol(x):
     col=math.ceil((ix)/100)
     return col
+
+
+
 
 img = np.zeros((710,720,3), np.uint8)
 cv.namedWindow('image')
@@ -41,10 +52,4 @@ for i in range (6):
 cv.imshow("image",img)
 cv.waitKey()
 cv.destroyAllWindows()
-
-
-# In[ ]:
-
-
-
 
